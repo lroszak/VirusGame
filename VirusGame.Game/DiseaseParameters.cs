@@ -11,7 +11,8 @@ namespace VirusGame.Game
 
         public int SymptomsDelayInDays { get; set; }
         public int DaysForRecover { get; set; }
-        public int InitialAmountOfSickPeople { get; private set; }
+        public int InitialAmountOfInfectedPeople { get; set; }
+        public int AmountOfInfectedPeopleComingBackFromHolidayDaily { get; set; }
 
         public static DiseaseParameters Random()
         {
@@ -21,7 +22,8 @@ namespace VirusGame.Game
                 InfectionChance = (double)new Random().Next(25, 70) / 100d,
                 DeathChance= (double)new Random().Next(5, 100) / 1000d,
                 SymptomsDelayInDays = new Random().Next(4, 14),
-                InitialAmountOfSickPeople = new Random().Next(1, 1000),
+                InitialAmountOfInfectedPeople = new Random().Next(1, 1000),
+                AmountOfInfectedPeopleComingBackFromHolidayDaily= new Random().Next(1, 1000),
             };
         }
     }

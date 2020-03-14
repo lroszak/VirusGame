@@ -51,10 +51,11 @@ namespace VirusGame.Game
             availableActions.Add(new CloseShopsAction());
             availableActions.Add(new CloseSchoolsAction());
             availableActions.Add(new CloseRoadsAction());
+            availableActions.Add(new CloseBordersAction());
             availableActions.Add(new SuggestVitaminsAction());
 
             _healthyPeople.Add(_population.Population);
-            _infectedPeople.Add(_disease.InitialAmountOfSickPeople);
+            _infectedPeople.Add(_disease.InitialAmountOfInfectedPeople);
             _sickPeople.Add(0);
             _recoveredPeople.Add(0);
             _deaths.Add(0);
@@ -186,6 +187,7 @@ namespace VirusGame.Game
             {
                 var amountOfPeopleWhoCanBeInfected = _population.NaturalImmunity * (_population.Population - _infectedPeople.Sum());
                 var infectedToday = GetAmountOfContageousPeopleNow() * _disease.InfectionChance * _population.ChanceOfTwoCitizensMeeting;
+                infectedToday += _disease.AmountOfInfectedPeopleComingBackFromHolidayDaily;
                 return (int)Math.Min(infectedToday, amountOfPeopleWhoCanBeInfected);
             }
         }

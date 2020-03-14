@@ -7,20 +7,21 @@ namespace VirusGame
 {
     class Program
     {
-        private static int ReactionInterval = 1;
-
         static void Main(string[] args)
         {
             _game = GameFactory.StartNewGame();
 
             Console.WriteLine("You are a Prime Minister of Koronia, and your country is in danger!");
-
+            Console.WriteLine("People are coming back from holiday infected, but you know nothing about it.");
+            Console.WriteLine("Press any key to start.");
+            Console.ReadKey();
+            
             while (true)
             {
                 var gamestate = _game.GetGameState();
                 if (gamestate.DaysSinceOutbreak > 0)
                 {
-                    Console.WriteLine($"It's been {gamestate.DaysSinceOutbreak} day{(gamestate.DaysSinceOutbreak>1? "s":"")} since virus outbreak in Koronia.");
+                    Console.WriteLine($"It's been {gamestate.DaysSinceOutbreak} day{(gamestate.DaysSinceOutbreak>1? "s":"")} since virus infection in Koronia.");
 
                 }
                 PrintCountryStats();
@@ -38,7 +39,7 @@ namespace VirusGame
                     break;
                 }
 
-                if(gamestate.DaysSinceOutbreak % ReactionInterval == 0)
+                if(gamestate.SickPeopleCount > 0)
                 {
                     ReadUserAction();
 

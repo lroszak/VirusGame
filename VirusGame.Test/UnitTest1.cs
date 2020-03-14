@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using VirusGame.Game;
 
 namespace VirusGame.Test
 {
@@ -10,9 +11,48 @@ namespace VirusGame.Test
         }
 
         [Test]
-        public void Test1()
+        [Timeout(100000)]
+        public void JustDoNothing_AndGameShouldEnd()
         {
-            Assert.Pass();
+            for (int i = 0; i < 100; i++)
+            {
+                var game = GameFactory.StartNewGame();
+
+                while (!game.IsGameLost() && !game.IsGameWon())
+                {
+                    game.NextDay();
+                }
+            }
+        }
+
+        [Test]
+        [Timeout(100000)]
+        public void JustDoNothing_AndGameShouldProduceRandomEffectsWhenYouDoNothing()
+        {
+            int gamesWon = 0;
+            int gamesLost = 0;
+            for (int i = 0; i < 100; i++)
+            {
+                var game = GameFactory.StartNewGame();
+
+                while (!game.IsGameLost() && !game.IsGameWon())
+                {
+                    game.NextDay();
+                    game.GetGameState();
+                }
+                if (game.IsGameLost())
+                {
+                    gamesLost++;
+                }
+                if (game.IsGameWon())
+                {
+                    gamesWon++;
+                }
+            }
+
+            //Assert
+            Assert.IsTrue(gamesLost > 0);
+            Assert.IsTrue(gamesWon > 0);
         }
     }
 }

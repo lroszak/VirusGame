@@ -34,7 +34,7 @@ namespace VirusGame
                 }
                 if (_game.IsGameLost())
                 {
-                    Console.WriteLine("You lost, you have died with other people.");
+                    Console.WriteLine("You lost, you didn't manage to control the disease.");
                     Console.WriteLine($"Your country survived {_game.GetGameState().DaysSinceOutbreak} days");
                     break;
                 }

@@ -104,7 +104,7 @@ namespace VirusGame.Game
         }
         public bool IsGameLost()
         {
-            return GetGameState().CountryPopulation == 0;
+            return GetGameState().CountryPopulation == 0 || DaysSinceOutbreak > 365 * 2;
         }
 
         public bool IsGameWon()

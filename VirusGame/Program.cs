@@ -83,7 +83,7 @@ namespace VirusGame
 
         public static IGame _game { get; private set; }
 
-
+        
         public static void PrintCountryStats()
         {
             var gameState = _game.GetGameState();

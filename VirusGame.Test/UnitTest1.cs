@@ -6,6 +6,7 @@ namespace VirusGame.Test
     public class Tests
     {
         [SetUp]
+
         public void Setup()
         {
         }

@@ -1,0 +1,127 @@
+﻿@page "/"
+
+<h1>Corona</h1>
+
+@foreach (var item in @lines)
+{
+    <span>@item</span>
+    <br />
+}
+
+@if (@_game == null)
+{
+    <button class="btn btn-primary" @onclick="Start">Start Game</button>
+}
+else
+{
+    int i = 0;
+    @foreach (var action in @availableActions)
+    {
+        var xx = i++;
+        <button class="btn btn-primary m-1" @onclick="@(()=>DoAction(xx))">@xx @action.Description</button><br/>
+    }
+}
+
+@using VirusGame.Game;
+@using System.Text;
+@using System.Threading;
+
+@code {
+    List<string> lines = new List<string>();
+    List<VirusFightingAction> availableActions = new List<VirusFightingAction>();
+
+    IGame _game = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        lines.Add("You are a Prime Minister of Koronia, and your country is in danger!");
+        lines.Add("People are coming back from holiday infected, but you know nothing about it.");
+    }
+
+    void DoAction(int actionId)
+    {
+        lines.Clear();
+        availableActions.Clear();
+
+        _game.ApplyAction(actionId);
+        
+        _game.NextDay();
+
+        var gamestate = _game.GetGameState();
+        if (gamestate.DaysSinceOutbreak > 0)
+        {
+            lines.Add($"It's been {gamestate.DaysSinceOutbreak} day{(gamestate.DaysSinceOutbreak > 1 ? "s" : "")} since virus infection in Koronia.");
+        }
+        PrintCountryStats();
+
+        if (_game.IsGameWon())
+        {
+            lines.Add("You won, your country is saved.");
+            lines.Add($"It took {_game.GetGameState().DaysSinceOutbreak} days to fight outbreak.");
+            _game = null;
+            return;
+        }
+        if (_game.IsGameLost())
+        {
+            lines.Add("You lost, you didn't manage to control the disease.");
+            lines.Add($"Your country survived {_game.GetGameState().DaysSinceOutbreak} days");
+            _game = null;
+            return;
+        }
+
+        availableActions.Clear();
+        availableActions.AddRange(_game.GetAvailableActions());
+
+    }
+
+    void PrintCountryStats()
+    {
+        var gameState = _game.GetGameState();
+        lines.Add($"Population         : {gameState.CountryPopulation}");
+        lines.Add($"Sick People Count  : {gameState.SickPeopleCount}");
+        lines.Add($"Cured People Count : {gameState.CuredPeopleCount}");
+        lines.Add($"Dead People Count  : {gameState.DeadPeopleCount}");
+    }
+
+    void Start()
+    {
+        _game = GameFactory.StartNewGame();
+        while (true)
+        {
+
+            var gamestate = _game.GetGameState();
+            if (gamestate.DaysSinceOutbreak > 0)
+            {
+                lines.Add($"It's been {gamestate.DaysSinceOutbreak} day{(gamestate.DaysSinceOutbreak > 1 ? "s" : "")} since virus infection in Koronia.");
+            }
+            PrintCountryStats();
+
+            if (_game.IsGameWon())
+            {
+                lines.Add("You won, your country is saved.");
+                lines.Add($"It took {_game.GetGameState().DaysSinceOutbreak} days to fight outbreak.");
+                return;
+            }
+            if (_game.IsGameLost())
+            {
+                lines.Add("You lost, you didn't manage to control the disease.");
+                lines.Add($"Your country survived {_game.GetGameState().DaysSinceOutbreak} days");
+                return;
+            }
+
+            if (gamestate.SickPeopleCount > 0)
+            {
+                availableActions.Clear();
+                availableActions.AddRange(_game.GetAvailableActions());
+                break;
+            }
+            else
+            {
+                Thread.Sleep(150);
+            }
+
+            _game.NextDay();
+            lines.Clear();
+        }
+    }
+}

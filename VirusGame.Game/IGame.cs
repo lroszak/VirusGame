@@ -1,4 +1,6 @@
-﻿namespace VirusGame.Game
+﻿using System.Collections.Generic;
+
+namespace VirusGame.Game
 {
     public interface IGame
     {
@@ -8,5 +10,7 @@
 
         bool IsGameLost();
         bool IsGameWon();
+        void ApplyAction(int actionId);
+        IEnumerable<VirusFightingAction> GetAvailableActions();
     }
 }

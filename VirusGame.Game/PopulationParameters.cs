@@ -2,7 +2,7 @@
 
 namespace VirusGame.Game
 {
-    internal class PopulationParameters
+    struct PopulationParameters
     {
         public int Population { get; set; }
         public double NaturalImmunity { get; set; }

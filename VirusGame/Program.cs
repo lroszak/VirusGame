@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using VirusGame.Game;
 
 namespace VirusGame
 {
     class Program
     {
+        private static int ReactionInterval = 1;
+
         static void Main(string[] args)
         {
             _game = GameFactory.StartNewGame();
@@ -35,7 +38,15 @@ namespace VirusGame
                     break;
                 }
 
-                ReadUserAction();
+                if(gamestate.DaysSinceOutbreak % ReactionInterval == 0)
+                {
+                    ReadUserAction();
+
+                }
+                else
+                {
+                    Thread.Sleep(150);
+                }
 
                 _game.NextDay();
                 Console.Clear();
@@ -75,9 +86,10 @@ namespace VirusGame
         public static void PrintCountryStats()
         {
             var gameState = _game.GetGameState();
-            Console.WriteLine($"Population : {gameState.CountryPopulation}");
-            Console.WriteLine($"Sick People Count : {gameState.SickPeopleCount}");
+            Console.WriteLine($"Population         : {gameState.CountryPopulation}");
+            Console.WriteLine($"Sick People Count  : {gameState.SickPeopleCount}");
             Console.WriteLine($"Cured People Count : {gameState.CuredPeopleCount}");
+            Console.WriteLine($"Dead People Count  : {gameState.DeadPeopleCount}");
         }
     }
 }

@@ -128,6 +128,7 @@ namespace VirusGame.Game
             var gotRecoveredToday = CalculateRecoveredToday();
             var gotDeadToday = CalculateDeadToday();
 
+            
             _infectedPeople.Add(infectedToday);
             _sickPeople.Add(gotSickToday);
             _recoveredPeople.Add(gotRecoveredToday);
@@ -152,13 +153,13 @@ namespace VirusGame.Game
 
         private int CalculateDeadToday()
         {
-            if (_infectedPeople.Count < _disease.DaysForRecover)
+            if (_sickPeople.Count < _disease.DaysForRecover)
             {
                 return 0;
             }
             else
             {
-                return (int)(_infectedPeople[DaysSinceOutbreak - _disease.DaysForRecover] * (_disease.DeathChance));
+                return (int)(_sickPeople[DaysSinceOutbreak - _disease.DaysForRecover] * (_disease.DeathChance));
             }
         }
 
@@ -185,7 +186,7 @@ namespace VirusGame.Game
             {
                 var amountOfPeopleWhoCanBeInfected = _population.NaturalImmunity * (_population.Population - _infectedPeople.Sum());
                 var infectedToday = GetAmountOfContageousPeopleNow() * _disease.InfectionChance * _population.ChanceOfTwoCitizensMeeting;
-                return (int)Math.Max(infectedToday, amountOfPeopleWhoCanBeInfected);
+                return (int)Math.Min(infectedToday, amountOfPeopleWhoCanBeInfected);
             }
         }
     }

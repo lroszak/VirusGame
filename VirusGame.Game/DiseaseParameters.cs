@@ -18,7 +18,7 @@ namespace VirusGame.Game
             return new DiseaseParameters()
             {
                 DaysForRecover = new Random().Next(3, 10),
-                InfectionChance = (double)new Random().Next(1, 13) / 100d,
+                InfectionChance = (double)new Random().Next(25, 70) / 100d,
                 DeathChance= (double)new Random().Next(5, 100) / 1000d,
                 SymptomsDelayInDays = new Random().Next(4, 14),
                 InitialAmountOfSickPeople = new Random().Next(1, 1000),

@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<h1>Koronia Virus Outbrea,</h1>
+<h1>Virus in Koronia,</h1>
 
 @foreach (var item in @lines)
 {
@@ -18,7 +18,8 @@ else
     @foreach (var action in @availableActions)
     {
         var xx = i++;
-        <button class="btn btn-primary m-1" @onclick="@(()=>DoAction(xx))">@xx @action.Description</button><br/>
+        <button class="btn btn-primary m-1" @onclick="@(()=>DoAction(xx))">@xx @action.Description</button>
+        <br />
     }
 }
 
@@ -44,7 +45,7 @@ else
         availableActions.Clear();
 
         _game.ApplyAction(actionId);
-        
+
         _game.NextDay();
 
         var gamestate = _game.GetGameState();

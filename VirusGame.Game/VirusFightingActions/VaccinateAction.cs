@@ -16,7 +16,7 @@ namespace VirusGame.Game.VirusFightingActions
         internal override PopulationParameters ApplyAction(PopulationParameters populationParameters)
         {
             populationParameters.NaturalImmunity *= 1.5;
-            populationParameters.NaturalImmunity = Math.Max(1, populationParameters.NaturalImmunity);
+            populationParameters.NaturalImmunity = Math.Max(0.90, populationParameters.NaturalImmunity);
 
             return populationParameters;
         }
